@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free AI TikTok Caption Generator — create viral captions, hooks, and hashtags for your TikTok videos in seconds. No sign-up required.">
+<meta name="keywords" content="AI TikTok caption generator, TikTok captions, viral hooks, TikTok hashtags, AI caption writer">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="AI TikTok Caption Generator — Viral Captions in Seconds">
+<meta property="og:description" content="Generate scroll-stopping captions, viral hooks, trending hashtags, and CTAs for your TikTok videos with AI.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tiktokcaptiongen.ai">
+<title>AI TikTok Caption Generator — Free Viral Captions, Hooks & Hashtags</title>
+<style>
+  /* ===== Reset & Base ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #111118;
+    --bg-card: #16161f;
+    --bg-card-hover: #1c1c28;
+    --border: #252535;
+    --border-accent: #3a3a55;
+    --text-primary: #f0f0f5;
+    --text-secondary: #a0a0b8;
+    --text-muted: #63637a;
+    --accent: #ff2d55;
+    --accent-glow: rgba(255, 45, 85, 0.3);
+    --accent-2: #00d4aa;
+    --accent-2-glow: rgba(0, 212, 170, 0.3);
+    --accent-3: #7c5cfc;
+    --accent-3-glow: rgba(124, 92, 252, 0.3);
+    --accent-4: #ffb800;
+    --accent-4-glow: rgba(255, 184, 0, 0.3);
+    --gradient-1: linear-gradient(135deg, #ff2d55, #ff6b35);
+    --gradient-2: linear-gradient(135deg, #7c5cfc, #00d4aa);
+    --gradient-3: linear-gradient(135deg, #ff2d55, #7c5cfc);
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px var(--border);
+    --shadow-glow: 0 0 40px var(--accent-glow);
+    --shadow-glow-2: 0 0 40px var(--accent-2-glow);
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== Animated Background ===== */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .bg-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+    animation: orbFloat 20s ease-in-out infinite;
+  }
+  .bg-orb--1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -200px; animation-delay: 0s; }
+  .bg-orb--2 { width: 500px; height: 500px; background: var(--accent-3); bottom: -150px; left: -150px; animation-delay: -7s; }
+  .bg-orb--3 { width: 400px; height: 400px; background: var(--accent-2); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -14s; }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -30px) scale(1.1); }
+    50% { transform: translate(-20px, 20px) scale(0.9); }
+    75% { transform: translate(-30px, -20px) scale(1.05); }
+  }
+
+  /* ===== Layout ===== */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 0 auto; padding: 0 24px;
+  }
+
+  /* ===== Navbar ===== */
+  .navbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+  .navbar-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .navbar-logo { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+  .navbar-logo svg { width: 24px; height: 24px; }
+  .btn-sm {
+    background: var(--gradient-1); color: #fff; font-weight: 600; font-size: 0.85rem;
+    padding: 8px 18px; border-radius: 20px; border: none; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; display: inline-block;
+  }
+  .btn-sm:hover { transform: translateY(-1px); box-shadow: var(--shadow-glow); }
+
+  /* ===== Hero ===== */
+  .hero { padding: 80px 0 40px; text-align: center; position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(124,92,252,0.15); color: var(--accent-3);
+    border: 1px solid rgba(124,92,252,0.3); border-radius: 20px;
+    padding: 6px 16px; font-size: 0.8rem; font-weight: 600;
+    margin-bottom: 24px; animation: fadeInUp 0.6s ease-out;
+  }
+  .hero-badge .dot { width: 6px; height: 6px; background: var(--accent-3); border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .hero h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1.15;
+    animation: fadeInUp 0.6s ease-out 0.1s both;
+  }
+  .hero h1 .gradient-text {
+    background: var(--gradient-3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero p {
+    color: var(--text-secondary); font-size: 1.15rem; max-width: 560px;
+    margin: 20px auto 0; animation: fadeInUp 0.6s ease-out 0.2s both;
+  }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 48px; margin-top: 40px;
+    animation: fadeInUp 0.6s ease-out 0.3s both;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-value { font-size: 1.8rem; font-weight: 800; color: var(--accent-2); }
+  .hero-stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Input Form Card ===== */
+  .form-section { padding: 20px 0 60px; position: relative; z-index: 1; }
+  .card {
+    background: var(--bg-card); border-radius: var(--radius-xl);
+    border: 1px solid var(--border); padding: 36px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: var(--border-accent); }
+
+  .input-group { margin-bottom: 24px; }
+  .input-group label {
+    display: block; font-weight: 600; font-size: 0.9rem;
+    margin-bottom: 8px; color: var(--text-secondary);
+  }
+  .input-group textarea {
+    width: 100%; background: var(--bg-secondary); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text-primary);
+    font-family: var(--font-sans); font-size: 0.95rem;
+    padding: 14px 16px; resize: vertical; min-height: 90px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .input-group textarea:focus {
+    outline: none; border-color: var(--accent-3);
+    box-shadow: 0 0 0 3px rgba(124,92,252,0.15);
+  }
+
+  .tone-selector { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tone-chip {
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 18px; border: 1px solid var(--border);
+    border-radius: 25px; background: var(--bg-secondary);
+    color: var(--text-secondary); cursor: pointer; font-size: 0.88rem;
+    font-weight: 500; transition: all 0.25s; user-select: none;
+  }
+  .tone-chip:hover { border-color: var(--border-accent); color: var(--text-primary); }
+  .tone-chip.active {
+    border-color: var(--accent-3); background: rgba(124,92,252,0.12);
+    color: #b8a9ff; box-shadow: 0 0 12px rgba(124,92,252,0.2);
+  }
+  .tone-emoji { font-size: 1.1rem; }
+
+  .btn-generate {
+    width: 100%; padding: 16px 32px;
+    background: var(--gradient-1); color: #fff;
+    font-size: 1.05rem; font-weight: 700; font-family: var(--font-sans);
+    border: none; border-radius: var(--radius); cursor: pointer;
+    transition: all 0.3s;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    position: relative; overflow: hidden;
+  }
+  .btn-generate:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+  .btn-generate:active { transform: translateY(0); }
+  .btn-generate.loading { pointer-events: none; opacity: 0.8; }
+  .btn-generate svg { width: 18px; height: 18px; }
+
+  .spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+  .btn-generate.loading .spinner { display: block; }
+  .btn-generate.loading .btn-text { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== Results ===== */
+  .results-section { padding: 0 0 60px; position: relative; z-index: 1; display: none; }
+  .results-section.visible { display: block; }
+
+  .result-block {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px; margin-bottom: 16px;
+    animation: fadeInUp 0.5s ease-out both;
+    position: relative; overflow: hidden;
+  }
+  .result-block:nth-child(1) { animation-delay: 0s; }
+  .result-block:nth-child(2) { animation-delay: 0.1s; }
+  .result-block:nth-child(3) { animation-delay: 0.2s; }
+  .result-block:nth-child(4) { animation-delay: 0.3s; }
+
+  .result-block::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 3px; height: 100%;
+    border-radius: 3px 0 0 3px;
+  }
+  .result-block--captions::before { background: var(--accent-2); }
+  .result-block--hooks::before { background: var(--accent-3); }
+  .result-block--hashtags::before { background: var(--accent-4); }
+  .result-block--ctas::before { background: var(--accent); }
+
+  .result-block-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .result-block-icon {
+    width: 32px; height: 32px; border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .result-block--captions .result-block-icon { background: rgba(0,212,170,0.12); }
+  .result-block--hooks .result-block-icon { background: rgba(124,92,252,0.12); }
+  .result-block--hashtags .result-block-icon { background: rgba(255,184,0,0.12); }
+  .result-block--ctas .result-block-icon { background: rgba(255,45,85,0.12); }
+  .result-block-title { font-weight: 700; font-size: 0.9rem; color: var(--text-secondary); }
+
+  .result-item {
+    background: var(--bg-secondary); border-radius: var(--radius-sm);
+    padding: 14px 16px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 12px;
+    transition: background 0.2s, transform 0.2s; cursor: pointer;
+  }
+  .result-item:hover { background: var(--bg-card-hover); transform: translateX(4px); }
+  .result-item-number {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--bg-primary); color: var(--text-muted);
+    font-size: 0.75rem; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .result-item-text { font-size: 0.92rem; color: var(--text-primary); flex: 1; }
+
+  .btn-copy {
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: var(--radius-sm);
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; opacity: 0;
+  }
+  .result-item:hover .btn-copy { opacity: 1; }
+  .btn-copy:hover { background: var(--bg-card); border-color: var(--border-accent); color: var(--text-primary); }
+  .btn-copy.copied { border-color: var(--accent-2); color: var(--accent-2); background: rgba(0,212,170,0.1); }
+
+  .hashtag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hashtag-tag {
+    background: var(--bg-secondary); border: 1px solid var(--border);
+    border-radius: 20px; padding: 8px 16px; font-size: 0.85rem;
+    color: var(--text-primary); cursor: pointer;
+    transition: all 0.2s; user-select: none;
+  }
+  .hashtag-tag:hover { border-color: var(--accent-4); color: var(--accent-4); background: rgba(255,184,0,0.08); transform: translateY(-1px); }
+
+  .btn-actions {
+    display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;
+  }
+  .btn-regenerate {
+    flex: 1; min-width: 180px; padding: 14px 24px;
+    background: transparent; border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text-primary);
+    font-weight: 600; font-family: var(--font-sans); font-size: 0.9rem;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .btn-regenerate:hover { border-color: var(--border-accent); background: var(--bg-card); }
+  .btn-copy-all {
+    flex: 1; min-width: 180px; padding: 14px 24px;
+    background: var(--gradient-2); color: #fff; border: none;
+    border-radius: var(--radius); font-weight: 600;
+    font-family: var(--font-sans); font-size: 0.9rem;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .btn-copy-all:hover { transform: translateY(-1px); box-shadow: var(--shadow-glow-2); }
+
+  /* ===== Examples Section ===== */
+  .examples-section { padding: 40px 0 60px; position: relative; z-index: 1; }
+  .section-title {
+    font-size: 1.8rem; font-weight: 800; text-align: center;
+    margin-bottom: 12px; letter-spacing: -0.02em;
+  }
+  .section-subtitle {
+    color: var(--text-muted); text-align: center; margin-bottom: 36px;
+    font-size: 0.95rem;
+  }
+  .example-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .example-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px;
+    transition: all 0.3s; cursor: pointer;
+  }
+  .example-card:hover { border-color: var(--border-accent); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+  .example-card-topic { font-size: 0.75rem; color: var(--accent-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .example-card-text { font-size: 0.92rem; color: var(--text-primary); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .example-card-tag { display: inline-block; margin-top: 12px; font-size: 0.75rem; color: var(--text-muted); background: var(--bg-secondary); padding: 4px 10px; border-radius: 12px; }
+
+  /* ===== FAQ ===== */
+  .faq-section { padding: 40px 0 60px; position: relative; z-index: 1; }
+  .faq-list { max-width: 700px; margin: 0 auto; }
+  .faq-item {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 10px; background: var(--bg-card);
+    overflow: hidden; transition: border-color 0.3s;
+  }
+  .faq-item:hover { border-color: var(--border-accent); }
+  .faq-question {
+    width: 100%; text-align: left; padding: 18px 20px;
+    background: none; border: none; color: var(--text-primary);
+    font-size: 0.95rem; font-weight: 600; font-family: var(--font-sans);
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    gap: 12px;
+  }
+  .faq-arrow {
+    transition: transform 0.3s; font-size: 0.7rem; color: var(--text-muted); flex-shrink: 0;
+  }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--accent-3); }
+  .faq-answer {
+    max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out;
+    color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7;
+  }
+  .faq-answer-inner { padding: 0 20px 18px; }
+  .faq-item.open .faq-answer { max-height: 300px; }
+
+  /* ===== Footer ===== */
+  .footer {
+    border-top: 1px solid var(--border); padding: 40px 0;
+    position: relative; z-index: 1; text-align: center;
+  }
+  .footer-text { color: var(--text-muted); font-size: 0.85rem; }
+  .footer-text a { color: var(--text-secondary); text-decoration: none; }
+  .footer-text a:hover { color: var(--accent-3); }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--bg-card); border: 1px solid var(--accent-2);
+    border-radius: 25px; padding: 12px 24px;
+    color: var(--text-primary); font-weight: 600; font-size: 0.88rem;
+    z-index: 200; opacity: 0; transition: all 0.3s;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .container { padding: 0 16px; }
+    .hero { padding: 60px 0 20px; }
+    .hero h1 { font-size: 2rem; }
+    .hero p { font-size: 1rem; }
+    .hero-stats { gap: 24px; }
+    .hero-stat-value { font-size: 1.4rem; }
+    .card { padding: 24px; }
+    .tone-selector { gap: 8px; }
+    .tone-chip { padding: 8px 14px; font-size: 0.8rem; }
+    .example-grid { grid-template-columns: 1fr; }
+    .btn-actions { flex-direction: column; }
+    .section-title { font-size: 1.4rem; }
+  }
+
+  /* ===== Scroll reveal ===== */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb--1"></div>
+<div class="bg-orb bg-orb--2"></div>
+<div class="bg-orb bg-orb--3"></div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="navbar-logo">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#g1)"/><path d="M8 16V8l8 4-8 4z" fill="#fff"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff2d55"/><stop offset="100%" stop-color="#7c5cfc"/></linearGradient></defs></svg>
+      CaptionAI
+    </div>
+    <a href="#generator" class="btn-sm">Try Free</a>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span> AI-Powered Caption Generator
+    </div>
+    <h1>Generate <span class="gradient-text">Viral TikTok</span><br>Captions in Seconds</h1>
+    <p>Stop staring at a blank screen. Let AI craft scroll-stopping captions, viral hooks, trending hashtags, and powerful CTAs — tailored to your content.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-value">10K+</div><div class="hero-stat-label">Creators</div></div>
+      <div class="hero-stat"><div class="hero-stat-value">50K+</div><div class="hero-stat-label">Captions Generated</div></div>
+      <div class="hero-stat"><div class="hero-stat-value">4.9</div><div class="hero-stat-label">Rating</div></div>
+    </div>
+  </section>
+
+  <!-- Generator Form -->
+  <section class="form-section" id="generator">
+    <div class="card reveal">
+      <div class="input-group">
+        <label for="topicInput">What's your video about?</label>
+        <textarea id="topicInput" placeholder="E.g., morning routine, gym transformation, cooking pasta, outfit of the day, travel vlog..." rows="3"></textarea>
+      </div>
+      <div class="input-group">
+        <label>Select tone</label>
+        <div class="tone-selector" id="toneSelector">
+          <div class="tone-chip" data-tone="funny"><span class="tone-emoji">😂</span> Funny</div>
+          <div class="tone-chip active" data-tone="viral"><span class="tone-emoji">🔥</span> Viral</div>
+          <div class="tone-chip" data-tone="professional"><span class="tone-emoji">💼</span> Professional</div>
+          <div class="tone-chip" data-tone="aesthetic"><span class="tone-emoji">✨</span> Aesthetic</div>
+          <div class="tone-chip" data-tone="emotional"><span class="tone-emoji">💜</span> Emotional</div>
+        </div>
+      </div>
+      <button class="btn-generate" id="generateBtn" onclick="generate()">
+        <div class="spinner"></div>
+        <span class="btn-text">✨ Generate Captions</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="results-section" id="resultsSection">
+    <div id="resultsContainer"></div>
+    <div class="btn-actions">
+      <button class="btn-regenerate" onclick="document.getElementById('topicInput').focus(); window.scrollTo({top: document.getElementById('generator').offsetTop - 80, behavior: 'smooth'});">
+        🔄 Generate More
+      </button>
+      <button class="btn-copy-all" onclick="copyAll()">📋 Copy All to Clipboard</button>
+    </div>
+  </section>
+
+  <!-- Examples -->
+  <section class="examples-section">
+    <h2 class="section-title">Caption Examples</h2>
+    <p class="section-subtitle">See what our AI can create for different niches</p>
+    <div class="example-grid" id="exampleGrid"></div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-subtitle">Everything you need to know</p>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <p class="footer-text">
+      &copy; 2026 <a href="#">CaptionAI</a> — Free AI TikTok Caption Generator. Made with ❤️ for creators.
+    </p>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ===== Constants ===== */
+  const TONES = {
+    funny: { emoji: '😂', label: 'Funny' },
+    viral: { emoji: '🔥', label: 'Viral' },
+    professional: { emoji: '💼', label: 'Professional' },
+    aesthetic: { emoji: '✨', label: 'Aesthetic' },
+    emotional: { emoji: '💜', label: 'Emotional' }
+  };
+
+  const EXAMPLES = [
+    { topic: 'Morning Routine', tone: 'viral', text: 'POV: you finally nailed the 5am morning routine that changes everything 🌅 the glow up is real', tag: 'Lifestyle' },
+    { topic: 'Gym Transformation', tone: 'emotional', text: '6 months ago I couldn\'t look in the mirror. Today I\'m proud of who I\'ve become 💪🏽 your future self is watching', tag: 'Fitness' },
+    { topic: 'Cooking Pasta', tone: 'funny', text: 'When the pasta hits the wall and it actually sticks... that\'s amore 🍝🇮🇹 my Italian grandma would be proud', tag: 'Food' },
+    { topic: 'Outfit of the Day', tone: 'aesthetic', text: 'thrifted this whole fit for under $30 and I\'m never going back ✨ sustainable fashion hits different', tag: 'Fashion' },
+    { topic: 'Study With Me', tone: 'professional', text: '3 hours of deep work, 2 cups of coffee, 1 paper finished 📚 romanticizing the student life one page at a time', tag: 'Education' },
+    { topic: 'Travel Vlog', tone: 'aesthetic', text: 'booking that flight was the best decision I ever made ✈️ here\'s your sign to take the trip', tag: 'Travel' }
+  ];
+
+  const FAQ_DATA = [
+    { q: 'Is the AI TikTok Caption Generator really free?', a: 'Yes! Our basic caption generator is 100% free with no sign-up required. You can generate unlimited captions, hooks, hashtags, and CTAs. We plan to offer premium plans with advanced AI features, analytics, and content scheduling in the future.' },
+    { q: 'How does the AI generate captions?', a: 'Our AI analyzes your video topic, chosen tone, and current TikTok trends to craft captions that maximize engagement. It generates attention-grabbing hooks, context-rich captions, trending hashtags, and compelling calls-to-action — everything you need for a viral video.' },
+    { q: 'Can I edit the generated captions?', a: 'Absolutely! The AI gives you a strong starting point, but you can customize any caption to match your unique voice and style. Just click on any caption to copy it, then edit it wherever you post.' },
+    { q: 'What types of content does this work for?', a: 'Our generator works for any TikTok niche — lifestyle, fitness, food, fashion, beauty, tech, education, comedy, dance, travel, pets, and more. Just describe your video and pick a tone that matches.' },
+    { q: 'How do I get more views on TikTok?', a: 'Great captions are one part of the equation. Combine our AI-generated hooks and hashtags with trending audio, eye-catching thumbnails, and posting at optimal times. The hook is especially critical — it determines whether viewers stop scrolling.' }
+  ];
+
+  let selectedTone = 'viral';
+
+  /* ===== Tone Selector ===== */
+  document.getElementById('toneSelector').addEventListener('click', (e) => {
+    const chip = e.target.closest('.tone-chip');
+    if (!chip) return;
+    document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedTone = chip.dataset.tone;
+  });
+
+  /* ===== FAQ Accordion ===== */
+  document.getElementById('faqList').addEventListener('click', (e) => {
+    const question = e.target.closest('.faq-question');
+    if (!question) return;
+    const item = question.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(f => f.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+
+  /* ===== AI Generation Logic ===== */
+  function generate() {
+    const topic = document.getElementById('topicInput').value.trim();
+    if (!topic) {
+      document.getElementById('topicInput').focus();
+      document.getElementById('topicInput').style.borderColor = 'var(--accent)';
+      setTimeout(() => { document.getElementById('topicInput').style.borderColor = 'var(--border)'; }, 1500);
+      return;
+    }
+
+    const btn = document.getElementById('generateBtn');
+    btn.classList.add('loading');
+
+    // Simulate AI processing delay
+    setTimeout(() => {
+      const data = buildResponse(topic, selectedTone);
+      renderResults(data);
+      btn.classList.remove('loading');
+      document.getElementById('resultsSection').classList.add('visible');
+      document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 1200 + Math.random() * 800);
+  }
+
+  function buildResponse(topic, tone) {
+    const toneData = TONES[tone];
+    const toneLabel = toneData.label.toLowerCase();
+    const topicLower = topic.toLowerCase();
+
+    return {
+      tone: toneData,
+      captions: [
+        `POV: ${topicLower} hits different when you actually put in the work ${toneData.emoji} #glowup #${topicLower.replace(/\s/g, '')}`,
+        `not me gatekeeping this ${topicLower} secret any longer 🤫 ${toneData.emoji} the results speak for themselves`,
+        `Idk who needs to hear this but your ${topicLower} content is about to blow up 📈 ${toneData.emoji} consistency > perfection`,
+        `${toneLabel} energy only for this ${topicLower} moment ✨ save this for later bestie`,
+        `The internet needed this ${topicLower} content and didn't even know it ${toneData.emoji} like & follow for part 2`
+      ],
+      hooks: [
+        `Wait for it... this ${topicLower} hack will change everything 😱`,
+        `Stop scrolling if you struggle with ${topicLower} 🛑 I got you`,
+        `Nobody talks about this ${topicLower} secret but I'm spilling the tea ☕`,
+        `3 things I wish I knew before starting my ${topicLower} journey`,
+        `This ${topicLower} tip saved my content strategy — thread 🧵`
+      ],
+      hashtags: [
+        `#${topicLower.replace(/\s/g, '')}`, '#fyp', '#viral',
+        '#trending', '#contentcreator', '#tiktoktips',
+        '#growth', '#creatortok', '#foryoupage',
+        '#socialmediatips', '#engagement', '#blowup',
+        '#aesthetic', '#xyzbca', `#${toneLabel}`
+      ],
+      ctas: [
+        '👆 Double tap if you found this helpful!',
+        '📌 Save this for your next post',
+        'Follow for more daily creator tips 🔔',
+        'Comment your niche below — I\'ll make the next one for you 👇',
+        'Share this with an aspiring creator friend 💌'
+      ]
+    };
+  }
+
+  function renderResults(data) {
+    const container = document.getElementById('resultsContainer');
+    container.innerHTML = `
+      <div class="result-block result-block--captions">
+        <div class="result-block-header">
+          <div class="result-block-icon">✍️</div>
+          <div class="result-block-title">AI Captions — ${data.tone.emoji} ${data.tone.label} Tone</div>
+        </div>
+        ${data.captions.map((c, i) => `
+          <div class="result-item" onclick="copySingle(this, '${escapeHtml(c)}')">
+            <div class="result-item-number">${i + 1}</div>
+            <div class="result-item-text">${escapeHtml(c)}</div>
+            <button class="btn-copy" onclick="event.stopPropagation(); copySingle(this.closest('.result-item'), '${escapeHtml(c)}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="result-block result-block--hooks">
+        <div class="result-block-header">
+          <div class="result-block-icon">🎣</div>
+          <div class="result-block-title">Viral Hooks</div>
+        </div>
+        ${data.hooks.map((h, i) => `
+          <div class="result-item" onclick="copySingle(this, '${escapeHtml(h)}')">
+            <div class="result-item-number">${i + 1}</div>
+            <div class="result-item-text">${escapeHtml(h)}</div>
+            <button class="btn-copy" onclick="event.stopPropagation(); copySingle(this.closest('.result-item'), '${escapeHtml(h)}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="result-block result-block--hashtags">
+        <div class="result-block-header">
+          <div class="result-block-icon">#️⃣</div>
+          <div class="result-block-title">Trending Hashtags</div>
+        </div>
+        <div class="hashtag-cloud">
+          ${data.hashtags.map(h => `<span class="hashtag-tag" onclick="copyText('${h}')">${h}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="result-block result-block--ctas">
+        <div class="result-block-header">
+          <div class="result-block-icon">💬</div>
+          <div class="result-block-title">CTA Ideas</div>
+        </div>
+        ${data.ctas.map((c, i) => `
+          <div class="result-item" onclick="copySingle(this, '${escapeHtml(c)}')">
+            <div class="result-item-number">${i + 1}</div>
+            <div class="result-item-text">${escapeHtml(c)}</div>
+            <button class="btn-copy" onclick="event.stopPropagation(); copySingle(this.closest('.result-item'), '${escapeHtml(c)}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+    // Store current results for "copy all"
+    container._data = data;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  /* ===== Copy Functions ===== */
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => showToast('Copied! ✅'));
+  }
+
+  function copySingle(el, text) {
+    const btn = el.querySelector('.btn-copy');
+    navigator.clipboard.writeText(text).then(() => {
+      if (btn) { btn.classList.add('copied'); setTimeout(() => btn.classList.remove('copied'), 1500); }
+      showToast('Copied to clipboard! 📋');
+    });
+  }
+
+  function copyAll() {
+    const container = document.getElementById('resultsContainer');
+    const data = container._data;
+    if (!data) return;
+
+    const allText = [
+      '📱 CAPTIONS:',
+      ...data.captions,
+      '',
+      '🎣 HOOKS:',
+      ...data.hooks,
+      '',
+      '#️⃣ HASHTAGS:',
+      data.hashtags.join(' '),
+      '',
+      '💬 CTAs:',
+      ...data.ctas
+    ].join('\n');
+
+    navigator.clipboard.writeText(allText).then(() => showToast('All content copied! 🎉'));
+  }
+
+  /* ===== Toast ===== */
+  let toastTimeout;
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  /* ===== Keyboard shortcut ===== */
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      generate();
+    }
+  });
+
+  /* ===== Render Static Sections ===== */
+  function renderExamples() {
+    document.getElementById('exampleGrid').innerHTML = EXAMPLES.map(ex => `
+      <div class="example-card reveal" onclick="document.getElementById('topicInput').value='${escapeHtml(ex.topic)}'; document.querySelectorAll('.tone-chip').forEach(c=>c.classList.remove('active')); document.querySelector('[data-tone=\"${ex.tone}\"]').classList.add('active'); selectedTone='${ex.tone}'; document.getElementById('generator').scrollIntoView({behavior:'smooth',block:'center'});">
+        <div class="example-card-topic">${ex.topic} · ${ex.tag}</div>
+        <div class="example-card-text">${escapeHtml(ex.text)}</div>
+        <span class="example-card-tag">${TONES[ex.tone].emoji} ${TONES[ex.tone].label}</span>
+      </div>
+    `).join('');
+  }
+
+  function renderFAQ() {
+    document.getElementById('faqList').innerHTML = FAQ_DATA.map((faq, i) => `
+      <div class="faq-item reveal${i === 0 ? ' open' : ''}">
+        <button class="faq-question">
+          <span>${faq.q}</span>
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">${faq.a}</div></div>
+      </div>
+    `).join('');
+  }
+
+  /* ===== Scroll Reveal ===== */
+  function handleScrollReveal() {
+    document.querySelectorAll('.reveal').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        el.classList.add('visible');
+      }
+    });
+  }
+
+  /* ===== Init ===== */
+  renderExamples();
+  renderFAQ();
+  window.addEventListener('scroll', handleScrollReveal, { passive: true });
+  handleScrollReveal();
+
+  /* ===== Smooth scroll for nav links ===== */
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
