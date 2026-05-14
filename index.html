@@ -390,6 +390,24 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+  /* ===== Error Banner ===== */
+  .error-banner {
+    display: none; align-items: center; gap: 10px;
+    background: rgba(255,45,85,0.1); border: 1px solid var(--accent);
+    border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px;
+    color: var(--accent); font-size: 0.9rem; font-weight: 500;
+  }
+  .error-banner.visible { display: flex; }
+  .error-banner svg { flex-shrink: 0; width: 18px; height: 18px; }
+  .error-banner button {
+    margin-left: auto; flex-shrink: 0;
+    background: rgba(255,45,85,0.15); border: 1px solid var(--accent);
+    color: var(--accent); border-radius: 15px; padding: 4px 14px;
+    font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: var(--font-sans);
+    transition: all 0.2s;
+  }
+  .error-banner button:hover { background: var(--accent); color: #fff; }
+
   /* ===== Responsive ===== */
   @media (max-width: 640px) {
     .container { padding: 0 16px; }
@@ -487,6 +505,11 @@
 
   <!-- Results -->
   <section class="results-section" id="resultsSection">
+    <div class="error-banner" id="errorBanner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="errorMsg"></span>
+      <button id="retryBtn" onclick="generate()">Retry</button>
+    </div>
     <div id="resultsContainer"></div>
     <div class="btn-actions">
       <button class="btn-regenerate" onclick="document.getElementById('topicInput').focus(); window.scrollTo({top: document.getElementById('generator').offsetTop - 80, behavior: 'smooth'});">
@@ -589,65 +612,57 @@
     if (!wasOpen) item.classList.add('open');
   });
 
-  /* ===== AI Generation Logic ===== */
-  function generate() {
-    const topic = document.getElementById('topicInput').value.trim();
+  /* ===== AI Generation Logic (OpenAI API) ===== */
+  async function generate() {
+    const topicInput = document.getElementById('topicInput');
+    const topic = topicInput.value.trim();
     if (!topic) {
-      document.getElementById('topicInput').focus();
-      document.getElementById('topicInput').style.borderColor = 'var(--accent)';
-      setTimeout(() => { document.getElementById('topicInput').style.borderColor = 'var(--border)'; }, 1500);
+      topicInput.focus();
+      topicInput.style.borderColor = 'var(--accent)';
+      setTimeout(() => { topicInput.style.borderColor = 'var(--border)'; }, 1500);
       return;
     }
 
     const btn = document.getElementById('generateBtn');
+    const errorBanner = document.getElementById('errorBanner');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // Reset state
+    errorBanner.classList.remove('visible');
     btn.classList.add('loading');
+    document.getElementById('resultsSection').classList.add('visible');
+    document.getElementById('resultsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">🤖 AI is crafting your captions...</div>';
 
-    // Simulate AI processing delay
-    setTimeout(() => {
-      const data = buildResponse(topic, selectedTone);
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic, tone: selectedTone })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || `Server error (${response.status})`);
+      }
+
+      if (!data.captions || data.captions.length === 0) {
+        throw new Error('AI returned no captions. Try a different topic.');
+      }
+
+      // Merge the tone emoji into the response for rendering
+      data.tone = TONES[selectedTone] || { emoji: '🔥', label: 'Viral' };
       renderResults(data);
-      btn.classList.remove('loading');
-      document.getElementById('resultsSection').classList.add('visible');
       document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 1200 + Math.random() * 800);
-  }
-
-  function buildResponse(topic, tone) {
-    const toneData = TONES[tone];
-    const toneLabel = toneData.label.toLowerCase();
-    const topicLower = topic.toLowerCase();
-
-    return {
-      tone: toneData,
-      captions: [
-        `POV: ${topicLower} hits different when you actually put in the work ${toneData.emoji} #glowup #${topicLower.replace(/\s/g, '')}`,
-        `not me gatekeeping this ${topicLower} secret any longer 🤫 ${toneData.emoji} the results speak for themselves`,
-        `Idk who needs to hear this but your ${topicLower} content is about to blow up 📈 ${toneData.emoji} consistency > perfection`,
-        `${toneLabel} energy only for this ${topicLower} moment ✨ save this for later bestie`,
-        `The internet needed this ${topicLower} content and didn't even know it ${toneData.emoji} like & follow for part 2`
-      ],
-      hooks: [
-        `Wait for it... this ${topicLower} hack will change everything 😱`,
-        `Stop scrolling if you struggle with ${topicLower} 🛑 I got you`,
-        `Nobody talks about this ${topicLower} secret but I'm spilling the tea ☕`,
-        `3 things I wish I knew before starting my ${topicLower} journey`,
-        `This ${topicLower} tip saved my content strategy — thread 🧵`
-      ],
-      hashtags: [
-        `#${topicLower.replace(/\s/g, '')}`, '#fyp', '#viral',
-        '#trending', '#contentcreator', '#tiktoktips',
-        '#growth', '#creatortok', '#foryoupage',
-        '#socialmediatips', '#engagement', '#blowup',
-        '#aesthetic', '#xyzbca', `#${toneLabel}`
-      ],
-      ctas: [
-        '👆 Double tap if you found this helpful!',
-        '📌 Save this for your next post',
-        'Follow for more daily creator tips 🔔',
-        'Comment your niche below — I\'ll make the next one for you 👇',
-        'Share this with an aspiring creator friend 💌'
-      ]
-    };
+    } catch (err) {
+      console.error('Generate error:', err);
+      errorMsg.textContent = err.message || 'Something went wrong. Please try again.';
+      errorBanner.classList.add('visible');
+      // Clear loading placeholder
+      document.getElementById('resultsContainer').innerHTML = '';
+    } finally {
+      btn.classList.remove('loading');
+    }
   }
 
   function renderResults(data) {

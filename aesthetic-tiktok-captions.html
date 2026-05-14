@@ -142,6 +142,11 @@
   .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; } .footer-links a:hover { color: #e8a0bf; }
   .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--bg-card); border: 1px solid #e8a0bf; border-radius: 25px; padding: 12px 24px; color: var(--text-primary); font-weight: 600; font-size: 0.88rem; z-index: 200; opacity: 0; transition: all 0.3s; box-shadow: 0 8px 30px rgba(0,0,0,0.4); pointer-events: none; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .error-banner { display: none; align-items: center; gap: 10px; background: rgba(255,45,85,0.1); border: 1px solid var(--accent); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px; color: var(--accent); font-size: 0.9rem; font-weight: 500; }
+  .error-banner.visible { display: flex; }
+  .error-banner svg { flex-shrink: 0; width: 18px; height: 18px; }
+  .error-banner button { margin-left: auto; flex-shrink: 0; background: rgba(255,45,85,0.15); border: 1px solid var(--accent); color: var(--accent); border-radius: 15px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: var(--font-sans); transition: all 0.2s; }
+  .error-banner button:hover { background: var(--accent); color: #fff; }
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; } .reveal.visible { opacity: 1; transform: translateY(0); }
   @media (max-width: 640px) { .container { padding: 0 16px; } .hero { padding: 60px 0 20px; } .hero h1 { font-size: 2rem; } .hero p { font-size: 1rem; } .hero-stats { gap: 24px; } .hero-stat-value { font-size: 1.4rem; } .card { padding: 24px; } .tone-selector { gap: 8px; } .tone-chip { padding: 8px 14px; font-size: 0.8rem; } .example-grid { grid-template-columns: 1fr; } .btn-actions { flex-direction: column; } .section-title { font-size: 1.4rem; } .nav-links { display: none; } }
 </style>
@@ -210,6 +215,11 @@
   </section>
 
   <section class="results-section" id="resultsSection">
+    <div class="error-banner" id="errorBanner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="errorMsg"></span>
+      <button id="retryBtn" onclick="generate()">Retry</button>
+    </div>
     <div id="resultsContainer"></div>
     <div class="btn-actions">
       <button class="btn-regenerate" onclick="document.getElementById('topicInput').focus(); window.scrollTo({top: document.getElementById('generator').offsetTop - 80, behavior: 'smooth'});">🔄 Generate More</button>
@@ -308,9 +318,48 @@
   document.getElementById('nicheDropdownBtn').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('nicheDropdown').classList.toggle('open'); });
   document.addEventListener('click', () => document.getElementById('nicheDropdown').classList.remove('open'));
 
-  function generate() { const t = document.getElementById('topicInput').value.trim(); if (!t) { document.getElementById('topicInput').focus(); document.getElementById('topicInput').style.borderColor = 'var(--accent)'; setTimeout(() => { document.getElementById('topicInput').style.borderColor = 'var(--border)'; }, 1500); return; } const b = document.getElementById('generateBtn'); b.classList.add('loading'); setTimeout(() => { const d = buildResponse(t, selectedTone); renderResults(d); b.classList.remove('loading'); document.getElementById('resultsSection').classList.add('visible'); document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 1200 + Math.random() * 800); }
+  async function generate() {
+    const topicInput = document.getElementById('topicInput');
+    const topic = topicInput.value.trim();
+    if (!topic) {
+      topicInput.focus();
+      topicInput.style.borderColor = 'var(--accent)';
+      setTimeout(() => { topicInput.style.borderColor = 'var(--border)'; }, 1500);
+      return;
+    }
+    const btn = document.getElementById('generateBtn');
+    const errorBanner = document.getElementById('errorBanner');
+    const errorMsg = document.getElementById('errorMsg');
+    errorBanner.classList.remove('visible');
+    btn.classList.add('loading');
+    document.getElementById('resultsSection').classList.add('visible');
+    document.getElementById('resultsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">🤖 AI is crafting your captions...</div>';
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic, tone: selectedTone })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Server error (' + response.status + ')');
+      }
+      if (!data.captions || data.captions.length === 0) {
+        throw new Error('AI returned no captions. Try a different topic.');
+      }
+      data.tone = TONES[selectedTone] || { emoji: '🔥', label: 'Viral' };
+      renderResults(data);
+      document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      console.error('Generate error:', err);
+      errorMsg.textContent = err.message || 'Something went wrong. Please try again.';
+      errorBanner.classList.add('visible');
+      document.getElementById('resultsContainer').innerHTML = '';
+    } finally {
+      btn.classList.remove('loading');
+    }
+  }
 
-  function buildResponse(topic, tone) { const td = TONES[tone]; const tl = td.label.toLowerCase(); const tL = topic.toLowerCase(); const ae = ['✨', '🌸', '☁️', '🌿', '🕯️']; const re = () => ae[Math.floor(Math.random() * ae.length)]; return { tone: td, captions: [`There\'s something about ${tL} that makes my soul feel at home ${re()} collecting moments, not things ✨ #aesthetic #vibes`, `${tl} energy wrapped in ${tL} moments ${td.emoji} the little things are the big things when you pay attention ☁️`, `POV: you romanticized ${tL} and now life feels like a film ${re()} this is your sign to slow down and notice the beauty`, `In my ${tL} era and I\'m not going back ${re()}🌸 curating a life that feels as good as it looks ${td.emoji}`, `Chasing ${tL} like it\'s the last golden hour on earth 🌅 ${re()} some moments are too beautiful not to share`], hooks: [`This ${tL} moment felt like a dream I didn\'t want to wake up from ☁️`, `POV: ${tL} — turn your sound on and stay awhile 🎞️`, `If ${tL} was a feeling, this would be it ${re()}`, `Things that feel like a warm hug: ${tL} and golden hour light 🌅`, `Your daily reminder to romanticize ${tL} ${re()} you deserve a soft life`], hashtags: ['#aesthetic', '#vibes', '#softlife', '#thatgirl', '#pinterest', '#romanticizeyourlife', '#slowliving', '#cozyvibes', '#dreamlife', '#goldenhour', '#cottagecore', '#aesthetictiktok', `#${tL.replace(/\s/g, '')}`, '#angelic', '#softaesthetic'], ctas: ['🌸 Save this vibe for your next golden hour moment', '✨ Follow for more soft life energy & aesthetic content', '☁️ What\'s one thing you\'re romanticizing lately? comment below', 'Share this with someone who gets your aesthetic 💌', '🕯️ Double tap if this vibe resonates with your soul'] }; }
 
   function renderResults(data) { const c = document.getElementById('resultsContainer'); c.innerHTML = `<div class="result-block result-block--captions"><div class="result-block-header"><div class="result-block-icon">✍️</div><div class="result-block-title">Aesthetic Captions — ${data.tone.emoji} ${data.tone.label} Tone</div></div>${data.captions.map((x,i) => `<div class="result-item" onclick="copySingle(this,'${escapeHtml(x)}')"><div class="result-item-number">${i+1}</div><div class="result-item-text">${escapeHtml(x)}</div><button class="btn-copy" onclick="event.stopPropagation();copySingle(this.closest('.result-item'),'${escapeHtml(x)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`).join('')}</div><div class="result-block result-block--hooks"><div class="result-block-header"><div class="result-block-icon">🎣</div><div class="result-block-title">Aesthetic Hooks That Capture the Vibe</div></div>${data.hooks.map((x,i) => `<div class="result-item" onclick="copySingle(this,'${escapeHtml(x)}')"><div class="result-item-number">${i+1}</div><div class="result-item-text">${escapeHtml(x)}</div><button class="btn-copy" onclick="event.stopPropagation();copySingle(this.closest('.result-item'),'${escapeHtml(x)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`).join('')}</div><div class="result-block result-block--hashtags"><div class="result-block-header"><div class="result-block-icon">#️⃣</div><div class="result-block-title">Trending Aesthetic Hashtags</div></div><div class="hashtag-cloud">${data.hashtags.map(h => `<span class="hashtag-tag" onclick="copyText('${h}')">${h}</span>`).join('')}</div></div><div class="result-block result-block--ctas"><div class="result-block-header"><div class="result-block-icon">💬</div><div class="result-block-title">Soft CTA Ideas</div></div>${data.ctas.map((x,i) => `<div class="result-item" onclick="copySingle(this,'${escapeHtml(x)}')"><div class="result-item-number">${i+1}</div><div class="result-item-text">${escapeHtml(x)}</div><button class="btn-copy" onclick="event.stopPropagation();copySingle(this.closest('.result-item'),'${escapeHtml(x)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`).join('')}</div>`; c._data = data; }
 
