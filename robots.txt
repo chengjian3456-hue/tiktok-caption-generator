@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://tiktok-caption-generator-omega.vercel.app/sitemap.xml
