@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free AI Beauty TikTok Caption Generator — create viral makeup captions, skincare hooks, and trending beauty hashtags. Perfect for beauty influencers and makeup artists.">
+<meta name="keywords" content="beauty TikTok captions, makeup captions for TikTok, skincare TikTok captions, beauty hashtags, makeup TikTok ideas, beauty content creator, viral beauty captions">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Beauty TikTok Caption Generator — Viral Makeup & Skincare Captions">
+<meta property="og:description" content="Generate stunning beauty captions, makeup hooks, trending skincare hashtags, and CTAs for your TikTok beauty content with AI. Built for beauty creators.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tiktokcaptiongen.ai/beauty-tiktok-captions">
+<link rel="canonical" href="https://tiktokcaptiongen.ai/beauty-tiktok-captions">
+<title>Beauty TikTok Caption Generator — Free Makeup & Skincare Captions, Hooks & Hashtags</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-primary: #0a0a0f; --bg-secondary: #111118; --bg-card: #16161f; --bg-card-hover: #1c1c28;
+    --border: #252535; --border-accent: #3a3a55; --text-primary: #f0f0f5; --text-secondary: #a0a0b8;
+    --text-muted: #63637a; --accent: #ff2d55; --accent-glow: rgba(255, 45, 85, 0.3);
+    --accent-2: #00d4aa; --accent-2-glow: rgba(0, 212, 170, 0.3);
+    --accent-3: #7c5cfc; --accent-3-glow: rgba(124, 92, 252, 0.3);
+    --accent-4: #ffb800; --accent-4-glow: rgba(255, 184, 0, 0.3);
+    --gradient-1: linear-gradient(135deg, #ff2d55, #ff6b35);
+    --gradient-2: linear-gradient(135deg, #ff2d55, #ff8fab);
+    --gradient-3: linear-gradient(135deg, #ff2d55, #7c5cfc);
+    --radius-sm: 8px; --radius: 12px; --radius-lg: 16px; --radius-xl: 24px;
+    --shadow-glow: 0 0 40px var(--accent-glow); --shadow-glow-2: 0 0 40px rgba(255,143,171,0.3);
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-sans); background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  .bg-grid { position: fixed; inset: 0; z-index: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+  .bg-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.12; pointer-events: none; z-index: 0; animation: orbFloat 20s ease-in-out infinite; }
+  .bg-orb--1 { width: 600px; height: 600px; background: #ff8fab; top: -200px; right: -200px; animation-delay: 0s; }
+  .bg-orb--2 { width: 500px; height: 500px; background: var(--accent-3); bottom: -150px; left: -150px; animation-delay: -7s; }
+  .bg-orb--3 { width: 400px; height: 400px; background: var(--accent); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -14s; }
+  @keyframes orbFloat { 0%, 100% { transform: translate(0, 0) scale(1); } 25% { transform: translate(40px, -30px) scale(1.1); } 50% { transform: translate(-20px, 20px) scale(0.9); } 75% { transform: translate(-30px, -20px) scale(1.05); } }
+  .container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  .navbar { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+  .navbar-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .navbar-logo { font-weight: 700; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text-primary); }
+  .navbar-logo svg { width: 24px; height: 24px; }
+  .nav-links { display: flex; align-items: center; gap: 8px; }
+  .nav-dropdown { position: relative; display: flex; align-items: center; }
+  .nav-dropdown-btn { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; color: var(--text-secondary); font-size: 0.8rem; font-weight: 500; font-family: var(--font-sans); padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+  .nav-dropdown-btn:hover { border-color: var(--border-accent); color: var(--text-primary); }
+  .nav-dropdown-btn svg { width: 10px; height: 10px; transition: transform 0.2s; }
+  .nav-dropdown.open .nav-dropdown-btn svg { transform: rotate(180deg); }
+  .nav-dropdown-menu { position: absolute; top: calc(100% + 8px); right: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px; min-width: 200px; display: none; box-shadow: 0 12px 40px rgba(0,0,0,0.5); z-index: 200; }
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu a { display: block; padding: 10px 14px; border-radius: var(--radius-sm); color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; transition: all 0.15s; }
+  .nav-dropdown-menu a:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .nav-dropdown-menu a.active { color: #ff8fab; background: rgba(255,143,171,0.08); }
+  .btn-sm { background: var(--gradient-1); color: #fff; font-weight: 600; font-size: 0.85rem; padding: 8px 18px; border-radius: 20px; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; display: inline-block; }
+  .btn-sm:hover { transform: translateY(-1px); box-shadow: var(--shadow-glow); }
+  .hero { padding: 80px 0 40px; text-align: center; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,143,171,0.15); color: #ff8fab; border: 1px solid rgba(255,143,171,0.3); border-radius: 20px; padding: 6px 16px; font-size: 0.8rem; font-weight: 600; margin-bottom: 24px; animation: fadeInUp 0.6s ease-out; }
+  .hero-badge .dot { width: 6px; height: 6px; background: #ff8fab; border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .hero h1 { font-size: clamp(2.4rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; animation: fadeInUp 0.6s ease-out 0.1s both; }
+  .hero h1 .gradient-text { background: linear-gradient(135deg, #ff8fab, #ff2d55); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero p { color: var(--text-secondary); font-size: 1.15rem; max-width: 560px; margin: 20px auto 0; animation: fadeInUp 0.6s ease-out 0.2s both; }
+  .hero-stats { display: flex; justify-content: center; gap: 48px; margin-top: 40px; animation: fadeInUp 0.6s ease-out 0.3s both; }
+  .hero-stat { text-align: center; } .hero-stat-value { font-size: 1.8rem; font-weight: 800; color: #ff8fab; } .hero-stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .form-section { padding: 20px 0 60px; position: relative; z-index: 1; }
+  .card { background: var(--bg-card); border-radius: var(--radius-xl); border: 1px solid var(--border); padding: 36px; box-shadow: 0 4px 24px rgba(0,0,0,0.3); transition: border-color 0.3s; }
+  .card:hover { border-color: var(--border-accent); }
+  .input-group { margin-bottom: 24px; } .input-group label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary); }
+  .input-group textarea { width: 100%; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; padding: 14px 16px; resize: vertical; min-height: 90px; transition: border-color 0.3s, box-shadow 0.3s; }
+  .input-group textarea:focus { outline: none; border-color: #ff8fab; box-shadow: 0 0 0 3px rgba(255,143,171,0.15); }
+  .tone-selector { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tone-chip { display: flex; align-items: center; gap: 6px; padding: 10px 18px; border: 1px solid var(--border); border-radius: 25px; background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; font-size: 0.88rem; font-weight: 500; transition: all 0.25s; user-select: none; }
+  .tone-chip:hover { border-color: var(--border-accent); color: var(--text-primary); }
+  .tone-chip.active { border-color: #ff8fab; background: rgba(255,143,171,0.12); color: #ffb8c9; box-shadow: 0 0 12px rgba(255,143,171,0.2); }
+  .tone-emoji { font-size: 1.1rem; }
+  .btn-generate { width: 100%; padding: 16px 32px; background: linear-gradient(135deg, #ff2d55, #ff8fab); color: #fff; font-size: 1.05rem; font-weight: 700; font-family: var(--font-sans); border: none; border-radius: var(--radius); cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,143,171,0.3); }
+  .btn-generate.loading { pointer-events: none; opacity: 0.8; }
+  .spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+  .btn-generate.loading .spinner { display: block; } .btn-generate.loading .btn-text { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .results-section { padding: 0 0 60px; position: relative; z-index: 1; display: none; } .results-section.visible { display: block; }
+  .result-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; animation: fadeInUp 0.5s ease-out both; position: relative; overflow: hidden; }
+  .result-block:nth-child(1) { animation-delay: 0s; } .result-block:nth-child(2) { animation-delay: 0.1s; } .result-block:nth-child(3) { animation-delay: 0.2s; } .result-block:nth-child(4) { animation-delay: 0.3s; }
+  .result-block::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; border-radius: 3px 0 0 3px; }
+  .result-block--captions::before { background: #ff8fab; } .result-block--hooks::before { background: var(--accent-3); } .result-block--hashtags::before { background: var(--accent-4); } .result-block--ctas::before { background: var(--accent); }
+  .result-block-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .result-block-icon { width: 32px; height: 32px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+  .result-block--captions .result-block-icon { background: rgba(255,143,171,0.12); } .result-block--hooks .result-block-icon { background: rgba(124,92,252,0.12); } .result-block--hashtags .result-block-icon { background: rgba(255,184,0,0.12); } .result-block--ctas .result-block-icon { background: rgba(255,45,85,0.12); }
+  .result-block-title { font-weight: 700; font-size: 0.9rem; color: var(--text-secondary); }
+  .result-item { background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; transition: background 0.2s, transform 0.2s; cursor: pointer; }
+  .result-item:hover { background: var(--bg-card-hover); transform: translateX(4px); }
+  .result-item-number { width: 24px; height: 24px; border-radius: 50%; background: var(--bg-primary); color: var(--text-muted); font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .result-item-text { font-size: 0.92rem; color: var(--text-primary); flex: 1; }
+  .btn-copy { flex-shrink: 0; width: 32px; height: 32px; border-radius: var(--radius-sm); background: transparent; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; opacity: 0; }
+  .result-item:hover .btn-copy { opacity: 1; } .btn-copy:hover { background: var(--bg-card); border-color: var(--border-accent); color: var(--text-primary); }
+  .btn-copy.copied { border-color: #ff8fab; color: #ff8fab; background: rgba(255,143,171,0.1); }
+  .hashtag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hashtag-tag { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 20px; padding: 8px 16px; font-size: 0.85rem; color: var(--text-primary); cursor: pointer; transition: all 0.2s; user-select: none; }
+  .hashtag-tag:hover { border-color: #ff8fab; color: #ff8fab; background: rgba(255,143,171,0.08); transform: translateY(-1px); }
+  .btn-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+  .btn-regenerate { flex: 1; min-width: 180px; padding: 14px 24px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-primary); font-weight: 600; font-family: var(--font-sans); font-size: 0.9rem; cursor: pointer; transition: all 0.3s; }
+  .btn-regenerate:hover { border-color: var(--border-accent); background: var(--bg-card); }
+  .btn-copy-all { flex: 1; min-width: 180px; padding: 14px 24px; background: linear-gradient(135deg, #ff8fab, #7c5cfc); color: #fff; border: none; border-radius: var(--radius); font-weight: 600; font-family: var(--font-sans); font-size: 0.9rem; cursor: pointer; transition: all 0.3s; }
+  .btn-copy-all:hover { transform: translateY(-1px); box-shadow: var(--shadow-glow-2); }
+  .examples-section { padding: 40px 0 60px; position: relative; z-index: 1; }
+  .section-title { font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 12px; letter-spacing: -0.02em; }
+  .section-subtitle { color: var(--text-muted); text-align: center; margin-bottom: 36px; font-size: 0.95rem; }
+  .example-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .example-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: all 0.3s; cursor: pointer; }
+  .example-card:hover { border-color: var(--border-accent); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+  .example-card-topic { font-size: 0.75rem; color: #ff8fab; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .example-card-text { font-size: 0.92rem; color: var(--text-primary); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .example-card-tag { display: inline-block; margin-top: 12px; font-size: 0.75rem; color: var(--text-muted); background: var(--bg-secondary); padding: 4px 10px; border-radius: 12px; }
+  .seo-content { padding: 40px 0 60px; position: relative; z-index: 1; }
+  .seo-content h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; }
+  .seo-content p { color: var(--text-secondary); margin-bottom: 16px; line-height: 1.8; }
+  .seo-content ul { color: var(--text-secondary); padding-left: 20px; margin-bottom: 16px; }
+  .seo-content ul li { margin-bottom: 8px; }
+  .niche-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 24px; }
+  .niche-links a { color: var(--text-secondary); text-decoration: none; padding: 8px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; font-size: 0.85rem; transition: all 0.2s; }
+  .niche-links a:hover { border-color: #ff8fab; color: #ff8fab; background: rgba(255,143,171,0.08); }
+  .faq-section { padding: 40px 0 60px; position: relative; z-index: 1; }
+  .faq-list { max-width: 700px; margin: 0 auto; }
+  .faq-item { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; background: var(--bg-card); overflow: hidden; transition: border-color 0.3s; }
+  .faq-item:hover { border-color: var(--border-accent); }
+  .faq-question { width: 100%; text-align: left; padding: 18px 20px; background: none; border: none; color: var(--text-primary); font-size: 0.95rem; font-weight: 600; font-family: var(--font-sans); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .faq-arrow { transition: transform 0.3s; font-size: 0.7rem; color: var(--text-muted); flex-shrink: 0; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); color: #ff8fab; }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
+  .faq-answer-inner { padding: 0 20px 18px; } .faq-item.open .faq-answer { max-height: 300px; }
+  .footer { border-top: 1px solid var(--border); padding: 40px 0; position: relative; z-index: 1; text-align: center; }
+  .footer-text { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; }
+  .footer-text a { color: var(--text-secondary); text-decoration: none; } .footer-text a:hover { color: #ff8fab; }
+  .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 12px; }
+  .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+  .footer-links a:hover { color: #ff8fab; }
+  .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--bg-card); border: 1px solid #ff8fab; border-radius: 25px; padding: 12px 24px; color: var(--text-primary); font-weight: 600; font-size: 0.88rem; z-index: 200; opacity: 0; transition: all 0.3s; box-shadow: 0 8px 30px rgba(0,0,0,0.4); pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; } .reveal.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 640px) {
+    .container { padding: 0 16px; } .hero { padding: 60px 0 20px; } .hero h1 { font-size: 2rem; } .hero p { font-size: 1rem; }
+    .hero-stats { gap: 24px; } .hero-stat-value { font-size: 1.4rem; } .card { padding: 24px; }
+    .tone-selector { gap: 8px; } .tone-chip { padding: 8px 14px; font-size: 0.8rem; }
+    .example-grid { grid-template-columns: 1fr; } .btn-actions { flex-direction: column; } .section-title { font-size: 1.4rem; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb--1"></div>
+<div class="bg-orb bg-orb--2"></div>
+<div class="bg-orb bg-orb--3"></div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#g1)"/><path d="M8 16V8l8 4-8 4z" fill="#fff"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff2d55"/><stop offset="100%" stop-color="#7c5cfc"/></linearGradient></defs></svg>
+      CaptionAI
+    </a>
+    <div class="nav-links">
+      <div class="nav-dropdown" id="nicheDropdown">
+        <button class="nav-dropdown-btn" id="nicheDropdownBtn" aria-haspopup="true" aria-expanded="false">📂 Niches <svg viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="fitness-tiktok-captions.html">💪 Fitness Captions</a>
+          <a href="beauty-tiktok-captions.html" class="active">💄 Beauty Captions</a>
+          <a href="crypto-tiktok-captions.html">₿ Crypto Captions</a>
+          <a href="funny-tiktok-captions.html">😂 Funny Captions</a>
+          <a href="aesthetic-tiktok-captions.html">✨ Aesthetic Captions</a>
+        </div>
+      </div>
+      <a href="#generator" class="btn-sm">Try Free</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <section class="hero">
+    <div class="hero-badge"><span class="dot"></span> #1 Beauty Caption Generator</div>
+    <h1>Generate <span class="gradient-text">Viral Beauty</span><br>TikTok Captions Instantly</h1>
+    <p>Create stunning makeup captions, skincare hooks, and trending beauty hashtags that stop the scroll. Built for beauty influencers, makeup artists, and skincare creators.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-value">8K+</div><div class="hero-stat-label">Beauty Creators</div></div>
+      <div class="hero-stat"><div class="hero-stat-value">30K+</div><div class="hero-stat-label">Beauty Captions</div></div>
+      <div class="hero-stat"><div class="hero-stat-value">4.9</div><div class="hero-stat-label">Rating</div></div>
+    </div>
+  </section>
+
+  <section class="form-section" id="generator">
+    <div class="card reveal">
+      <div class="input-group">
+        <label for="topicInput">Describe your beauty video</label>
+        <textarea id="topicInput" placeholder="E.g., makeup tutorial, skincare routine, GRWM, product review, hair transformation, glow up..." rows="3">glowy makeup tutorial</textarea>
+      </div>
+      <div class="input-group">
+        <label>Select tone</label>
+        <div class="tone-selector" id="toneSelector">
+          <div class="tone-chip" data-tone="funny"><span class="tone-emoji">😂</span> Funny</div>
+          <div class="tone-chip" data-tone="viral"><span class="tone-emoji">🔥</span> Viral</div>
+          <div class="tone-chip" data-tone="professional"><span class="tone-emoji">💼</span> Professional</div>
+          <div class="tone-chip active" data-tone="aesthetic"><span class="tone-emoji">✨</span> Aesthetic</div>
+          <div class="tone-chip" data-tone="emotional"><span class="tone-emoji">💜</span> Emotional</div>
+        </div>
+      </div>
+      <button class="btn-generate" id="generateBtn" onclick="generate()">
+        <div class="spinner"></div>
+        <span class="btn-text">💄 Generate Beauty Captions</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="results-section" id="resultsSection">
+    <div id="resultsContainer"></div>
+    <div class="btn-actions">
+      <button class="btn-regenerate" onclick="document.getElementById('topicInput').focus(); window.scrollTo({top: document.getElementById('generator').offsetTop - 80, behavior: 'smooth'});">🔄 Generate More</button>
+      <button class="btn-copy-all" onclick="copyAll()">📋 Copy All to Clipboard</button>
+    </div>
+  </section>
+
+  <section class="examples-section">
+    <h2 class="section-title">Beauty Caption Examples</h2>
+    <p class="section-subtitle">AI-generated captions for popular beauty niches</p>
+    <div class="example-grid" id="exampleGrid"></div>
+  </section>
+
+  <section class="seo-content">
+    <h2>Why Beauty Creators Choose Our TikTok Caption Generator</h2>
+    <p>In the competitive beauty niche on TikTok, your caption can make or break your video's performance. Our AI beauty caption generator is trained to understand beauty trends, product terminology, and the aesthetic language that resonates with beauty audiences. Whether you're a makeup artist, skincare enthusiast, or beauty reviewer — we've got you covered.</p>
+    <p>Our tool generates:</p>
+    <ul>
+      <li><strong>Makeup captions</strong> that showcase your artistry and products flawlessly</li>
+      <li><strong>Skincare hooks</strong> that educate and engage beauty-obsessed viewers</li>
+      <li><strong>Trending beauty hashtags</strong> from #makeuptutorial to #skincaretips</li>
+      <li><strong>CTA ideas</strong> that drive comments about beauty routines and product recommendations</li>
+    </ul>
+  </section>
+
+  <section class="faq-section">
+    <h2 class="section-title">Beauty Caption FAQ</h2>
+    <p class="section-subtitle">Common questions from beauty creators</p>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
+  <section class="niche-links">
+    <a href="index.html">🏠 Main Generator</a>
+    <a href="fitness-tiktok-captions.html">💪 Fitness Captions</a>
+    <a href="crypto-tiktok-captions.html">₿ Crypto Captions</a>
+    <a href="funny-tiktok-captions.html">😂 Funny Captions</a>
+    <a href="aesthetic-tiktok-captions.html">✨ Aesthetic Captions</a>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer-text">&copy; 2026 <a href="index.html">CaptionAI</a> — Free AI TikTok Caption Generator.</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="fitness-tiktok-captions.html">Fitness Captions</a>
+      <a href="beauty-tiktok-captions.html">Beauty Captions</a>
+      <a href="crypto-tiktok-captions.html">Crypto Captions</a>
+      <a href="funny-tiktok-captions.html">Funny Captions</a>
+      <a href="aesthetic-tiktok-captions.html">Aesthetic Captions</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const TONES = { funny: { emoji: '😂', label: 'Funny' }, viral: { emoji: '🔥', label: 'Viral' }, professional: { emoji: '💼', label: 'Professional' }, aesthetic: { emoji: '✨', label: 'Aesthetic' }, emotional: { emoji: '💜', label: 'Emotional' } };
+  const EXAMPLES = [
+    { topic: 'Glowy Makeup', tone: 'aesthetic', text: 'the secret to glass skin isn\'t a filter — it\'s this glow-boosting makeup routine ✨💄 dewy, radiant, and so achievable', tag: 'Makeup' },
+    { topic: 'Skincare Routine', tone: 'professional', text: 'dermatologist-approved skincare routine for clear skin in 2026 🧴✨ the 3 products that actually changed my skin barrier forever', tag: 'Skincare' },
+    { topic: 'GRWM Date Night', tone: 'viral', text: 'GRWM for date night using only drugstore products under $10 💄🔥 proof you don\'t need luxury for a luxe look', tag: 'GRWM' },
+    { topic: 'Hair Transformation', tone: 'emotional', text: 'chopped 12 inches and never looked back 💇‍♀️ sometimes the best glow up starts with letting go', tag: 'Hair' },
+    { topic: 'Makeup Fails', tone: 'funny', text: 'when the winged eyeliner starts flying in different directions 🛩️💄 the struggle is universal', tag: 'Comedy' },
+    { topic: 'Product Review', tone: 'professional', text: 'honest review: is this viral foundation worth the hype? 🧐💄 testing 12-hour wear, flashback, and shade match so you don\'t have to', tag: 'Review' }
+  ];
+  const FAQ_DATA = [
+    { q: 'What makes a good beauty TikTok caption?', a: 'Great beauty captions are descriptive, authentic, and inspire action. They should name the products used, describe the look or routine, and invite engagement. Our AI generates beauty captions that balance product detail with personality — exactly what performs best on BeautyTok.' },
+    { q: 'What are the best hashtags for beauty TikTok?', a: 'Top beauty hashtags include #beautytok, #makeuptutorial, #skincareroutine, #GRWM, #makeuphacks, #beautyreview, and niche tags like #glassskin or #cleangirlmakeup. Our generator automatically includes trending and niche-specific beauty hashtags.' },
+    { q: 'How can I make my beauty content stand out?', a: 'Stand out by combining trending audio with eye-catching before/after transitions, close-up product shots, and captions that tell a story. Our AI generates hooks specifically designed to grab attention in the competitive beauty niche.' },
+    { q: 'Is this caption generator free for beauty creators?', a: 'Yes! Our beauty TikTok caption generator is 100% free with no sign-up required. Generate unlimited makeup captions, skincare hooks, beauty hashtags, and CTAs. Premium AI features are coming soon for advanced beauty content planning.' }
+  ];
+  let selectedTone = 'aesthetic';
+
+  document.getElementById('toneSelector').addEventListener('click', (e) => { const chip = e.target.closest('.tone-chip'); if (!chip) return; document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('active')); chip.classList.add('active'); selectedTone = chip.dataset.tone; });
+  document.getElementById('faqList').addEventListener('click', (e) => { const q = e.target.closest('.faq-question'); if (!q) return; const item = q.parentElement; const was = item.classList.contains('open'); document.querySelectorAll('.faq-item.open').forEach(f => f.classList.remove('open')); if (!was) item.classList.add('open'); });
+  document.getElementById('nicheDropdownBtn').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('nicheDropdown').classList.toggle('open'); });
+  document.addEventListener('click', () => document.getElementById('nicheDropdown').classList.remove('open'));
+
+  function generate() {
+    const topic = document.getElementById('topicInput').value.trim();
+    if (!topic) { document.getElementById('topicInput').focus(); document.getElementById('topicInput').style.borderColor = 'var(--accent)'; setTimeout(() => { document.getElementById('topicInput').style.borderColor = 'var(--border)'; }, 1500); return; }
+    const btn = document.getElementById('generateBtn'); btn.classList.add('loading');
+    setTimeout(() => { const data = buildResponse(topic, selectedTone); renderResults(data); btn.classList.remove('loading'); document.getElementById('resultsSection').classList.add('visible'); document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 1200 + Math.random() * 800);
+  }
+
+  function buildResponse(topic, tone) {
+    const td = TONES[tone]; const tl = td.label.toLowerCase(); const tL = topic.toLowerCase();
+    const be = ['💄', '✨', '💋', '🧴', '🌸']; const re = () => be[Math.floor(Math.random() * be.length)];
+    return {
+      tone: td,
+      captions: [
+        `POV: you finally mastered the ${tL} and your skin has never looked better ${re()} the glow up is real #beautytok`,
+        `not me gatekeeping this ${tL} secret that changed everything ${td.emoji} ${re()} save this for your next glam session`,
+        `This ${tL} hits different when you know the right technique ${re()} consistency + the right products = magic`,
+        `${tl} vibes for this ${tL} moment ${td.emoji} ${re()} drop a 💄 if you\'re obsessed with this look`,
+        `The ${tL} tutorial no one asked for but everyone needed ${re()} like & follow for more beauty content ${td.emoji}`
+      ],
+      hooks: [
+        `The ${tL} trick that changed my makeup game forever 💄`,
+        `Stop scrolling — this ${tL} hack will save you 20 minutes every morning`,
+        `I tested 10 ${tL} products so you don\'t have to — here\'s the winner`,
+        `${tL} tutorial using ONLY drugstore products (under $15 total) 🧴`,
+        `Rate my ${tL} from 1-10 🎀 the results surprised even me`
+      ],
+      hashtags: ['#beautytok', '#makeuptutorial', '#skincareroutine', '#GRWM', '#makeup', '#beautyhacks', '#skincaretips', '#glasskin', `#${tL.replace(/\s/g, '')}`, '#cleangirlmakeup', '#beautyreviews', '#makeupartist', '#glowup', '#productreview', '#drugstoremakeup'],
+      ctas: ['💄 Drop your favorite makeup product in the comments!', '📌 Save this tutorial for your next glam session', 'Follow for daily beauty tips & product reviews 🔔', 'Tag a friend who needs this glow up ✨', 'Would you try this look? Comment YES or NO 👇']
+    };
+  }
+
+  function renderResults(data) {
+    const c = document.getElementById('resultsContainer');
+    c.innerHTML = `<div class="result-block result-block--captions"><div class="result-block-header"><div class="result-block-icon">✍️</div><div class="result-block-title">Beauty Captions — ${data.tone.emoji} ${data.tone.label} Tone</div></div>${data.captions.map((x,i) => `<div class="result-item" onclick="copySingle(this,'${escapeHtml(x)}')"><div class="result-item-number">${i+1}</div><div class="result-item-text">${escapeHtml(x)}</div><button class="btn-copy" onclick="event.stopPropagation();copySingle(this.closest('.result-item'),'${escapeHtml(x)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`).join('')}</div><div class="result-block result-block--hooks"><div class="result-block-header"><div class="result-block-icon">🎣</div><div class="result-block-title">Viral Beauty Hooks</div></div>${data.hooks.map((x,i) => `<div class="result-item" onclick="copySingle(this,'${escapeHtml(x)}')"><div class="result-item-number">${i+1}</div><div class="result-item-text">${escapeHtml(x)}</div><button class="btn-copy" onclick="event.stopPropagation();copySingle(this.closest('.result-item'),'${escapeHtml(x)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`).join('')}</div><div class="result-block result-block--hashtags"><div class="result-block-header"><div class="result-block-icon">#️⃣</div><div class="result-block-title">Trending Beauty Hashtags</div></div><div class="hashtag-cloud">${data.hashtags.map(h => `<span class="hashtag-tag" onclick="copyText('${h}')">${h}</span>`).join('')}</div></div><div class="result-block result-block--ctas"><div class="result-block-header"><div class="result-block-icon">💬</div><div class="result-block-title">CTA Ideas for Beauty</div></div>${data.ctas.map((x,i) => `<div class="result-item" onclick="copySingle(this,'${escapeHtml(x)}')"><div class="result-item-number">${i+1}</div><div class="result-item-text">${escapeHtml(x)}</div><button class="btn-copy" onclick="event.stopPropagation();copySingle(this.closest('.result-item'),'${escapeHtml(x)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`).join('')}</div>`;
+    c._data = data;
+  }
+
+  function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+  function copyText(t) { navigator.clipboard.writeText(t).then(() => showToast('Copied! ✅')); }
+  function copySingle(el, t) { const b = el.querySelector('.btn-copy'); navigator.clipboard.writeText(t).then(() => { if (b) { b.classList.add('copied'); setTimeout(() => b.classList.remove('copied'), 1500); } showToast('Copied to clipboard! 📋'); }); }
+  function copyAll() { const d = document.getElementById('resultsContainer')._data; if (!d) return; const t = ['📱 BEAUTY CAPTIONS:', ...d.captions, '', '🎣 HOOKS:', ...d.hooks, '', '#️⃣ HASHTAGS:', d.hashtags.join(' '), '', '💬 CTAs:', ...d.ctas].join('\n'); navigator.clipboard.writeText(t).then(() => showToast('All content copied! 🎉')); }
+  let tt; function showToast(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2000); }
+  document.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); generate(); } });
+  function renderExamples() { document.getElementById('exampleGrid').innerHTML = EXAMPLES.map(ex => `<div class="example-card reveal" onclick="document.getElementById('topicInput').value='${escapeHtml(ex.topic)}';document.querySelectorAll('.tone-chip').forEach(c=>c.classList.remove('active'));document.querySelector('[data-tone=\\'${ex.tone}\\']').classList.add('active');selectedTone='${ex.tone}';document.getElementById('generator').scrollIntoView({behavior:'smooth',block:'center'});"><div class="example-card-topic">${ex.topic} · ${ex.tag}</div><div class="example-card-text">${escapeHtml(ex.text)}</div><span class="example-card-tag">${TONES[ex.tone].emoji} ${TONES[ex.tone].label}</span></div>`).join(''); }
+  function renderFAQ() { document.getElementById('faqList').innerHTML = FAQ_DATA.map((faq,i) => `<div class="faq-item reveal${i===0?' open':''}"><button class="faq-question"><span>${faq.q}</span><span class="faq-arrow">▼</span></button><div class="faq-answer"><div class="faq-answer-inner">${faq.a}</div></div></div>`).join(''); }
+  function handleScrollReveal() { document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('visible'); }); }
+  renderExamples(); renderFAQ(); window.addEventListener('scroll', handleScrollReveal, { passive: true }); handleScrollReveal();
+  document.querySelectorAll('a[href^="#"]').forEach(l => { l.addEventListener('click', (e) => { e.preventDefault(); const t = document.querySelector(l.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth' }); }); });
+</script>
+</body>
+</html>

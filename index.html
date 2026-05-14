@@ -106,8 +106,19 @@
     display: flex; align-items: center; justify-content: space-between;
     height: 56px;
   }
-  .navbar-logo { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+  .navbar-logo { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text-primary); }
   .navbar-logo svg { width: 24px; height: 24px; }
+  .nav-links { display: flex; align-items: center; gap: 8px; }
+  .nav-dropdown { position: relative; display: flex; align-items: center; }
+  .nav-dropdown-btn { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; color: var(--text-secondary); font-size: 0.8rem; font-weight: 500; font-family: var(--font-sans); padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+  .nav-dropdown-btn:hover { border-color: var(--border-accent); color: var(--text-primary); }
+  .nav-dropdown-btn svg { width: 10px; height: 10px; transition: transform 0.2s; }
+  .nav-dropdown.open .nav-dropdown-btn svg { transform: rotate(180deg); }
+  .nav-dropdown-menu { position: absolute; top: calc(100% + 8px); right: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px; min-width: 200px; display: none; box-shadow: 0 12px 40px rgba(0,0,0,0.5); z-index: 200; }
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu a { display: block; padding: 10px 14px; border-radius: var(--radius-sm); color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; transition: all 0.15s; }
+  .nav-dropdown-menu a:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .nav-dropdown-menu a.active { color: var(--accent-3); background: rgba(124,92,252,0.08); }
   .btn-sm {
     background: var(--gradient-1); color: #fff; font-weight: 600; font-size: 0.85rem;
     padding: 8px 18px; border-radius: 20px; border: none; cursor: pointer;
@@ -393,6 +404,7 @@
     .example-grid { grid-template-columns: 1fr; }
     .btn-actions { flex-direction: column; }
     .section-title { font-size: 1.4rem; }
+    .nav-links { display: none; }
   }
 
   /* ===== Scroll reveal ===== */
@@ -413,11 +425,23 @@
 <!-- Navbar -->
 <nav class="navbar">
   <div class="navbar-inner">
-    <div class="navbar-logo">
+    <a href="index.html" class="navbar-logo">
       <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#g1)"/><path d="M8 16V8l8 4-8 4z" fill="#fff"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff2d55"/><stop offset="100%" stop-color="#7c5cfc"/></linearGradient></defs></svg>
       CaptionAI
+    </a>
+    <div class="nav-links">
+      <div class="nav-dropdown" id="nicheDropdown">
+        <button class="nav-dropdown-btn" id="nicheDropdownBtn" aria-haspopup="true" aria-expanded="false">📂 Niches <svg viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="fitness-tiktok-captions.html">💪 Fitness Captions</a>
+          <a href="beauty-tiktok-captions.html">💄 Beauty Captions</a>
+          <a href="crypto-tiktok-captions.html">₿ Crypto Captions</a>
+          <a href="funny-tiktok-captions.html">😂 Funny Captions</a>
+          <a href="aesthetic-tiktok-captions.html">✨ Aesthetic Captions</a>
+        </div>
+      </div>
+      <a href="#generator" class="btn-sm">Try Free</a>
     </div>
-    <a href="#generator" class="btn-sm">Try Free</a>
   </div>
 </nav>
 
@@ -486,14 +510,31 @@
     <div class="faq-list" id="faqList"></div>
   </section>
 
+  <!-- Niche Links -->
+  <section class="niche-links" style="position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:0 0 40px;">
+    <a href="fitness-tiktok-captions.html" style="color:var(--text-secondary);text-decoration:none;padding:8px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;font-size:0.85rem;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-3)';this.style.color='var(--accent-3)';this.style.background='rgba(124,92,252,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)';this.style.background='var(--bg-card)'">💪 Fitness Captions</a>
+    <a href="beauty-tiktok-captions.html" style="color:var(--text-secondary);text-decoration:none;padding:8px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;font-size:0.85rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#ff8fab';this.style.color='#ff8fab';this.style.background='rgba(255,143,171,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)';this.style.background='var(--bg-card)'">💄 Beauty Captions</a>
+    <a href="crypto-tiktok-captions.html" style="color:var(--text-secondary);text-decoration:none;padding:8px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;font-size:0.85rem;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-4)';this.style.color='var(--accent-4)';this.style.background='rgba(255,184,0,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)';this.style.background='var(--bg-card)'">₿ Crypto Captions</a>
+    <a href="funny-tiktok-captions.html" style="color:var(--text-secondary);text-decoration:none;padding:8px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;font-size:0.85rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#ff6b35';this.style.color='#ff6b35';this.style.background='rgba(255,107,53,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)';this.style.background='var(--bg-card)'">😂 Funny Captions</a>
+    <a href="aesthetic-tiktok-captions.html" style="color:var(--text-secondary);text-decoration:none;padding:8px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;font-size:0.85rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#e8a0bf';this.style.color='#e8a0bf';this.style.background='rgba(232,160,191,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)';this.style.background='var(--bg-card)'">✨ Aesthetic Captions</a>
+  </section>
+
 </main>
 
 <!-- Footer -->
 <footer class="footer">
   <div class="container">
     <p class="footer-text">
-      &copy; 2026 <a href="#">CaptionAI</a> — Free AI TikTok Caption Generator. Made with ❤️ for creators.
+      &copy; 2026 <a href="index.html">CaptionAI</a> — Free AI TikTok Caption Generator. Made with ❤️ for creators.
     </p>
+    <div class="footer-links" style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:12px;">
+      <a href="index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;">Home</a>
+      <a href="fitness-tiktok-captions.html" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;">Fitness Captions</a>
+      <a href="beauty-tiktok-captions.html" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;">Beauty Captions</a>
+      <a href="crypto-tiktok-captions.html" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;">Crypto Captions</a>
+      <a href="funny-tiktok-captions.html" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;">Funny Captions</a>
+      <a href="aesthetic-tiktok-captions.html" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;">Aesthetic Captions</a>
+    </div>
   </div>
 </footer>
 
@@ -772,6 +813,15 @@
   renderFAQ();
   window.addEventListener('scroll', handleScrollReveal, { passive: true });
   handleScrollReveal();
+
+  /* ===== Niche Dropdown ===== */
+  document.getElementById('nicheDropdownBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('nicheDropdown').classList.toggle('open');
+  });
+  document.addEventListener('click', () => {
+    document.getElementById('nicheDropdown').classList.remove('open');
+  });
 
   /* ===== Smooth scroll for nav links ===== */
   document.querySelectorAll('a[href^="#"]').forEach(link => {
