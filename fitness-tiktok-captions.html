@@ -179,11 +179,6 @@
   .footer-links a:hover { color: var(--accent-2); }
   .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--bg-card); border: 1px solid var(--accent-2); border-radius: 25px; padding: 12px 24px; color: var(--text-primary); font-weight: 600; font-size: 0.88rem; z-index: 200; opacity: 0; transition: all 0.3s; box-shadow: 0 8px 30px rgba(0,0,0,0.4); pointer-events: none; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-  .error-banner { display: none; align-items: center; gap: 10px; background: rgba(255,45,85,0.1); border: 1px solid var(--accent); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px; color: var(--accent); font-size: 0.9rem; font-weight: 500; }
-  .error-banner.visible { display: flex; }
-  .error-banner svg { flex-shrink: 0; width: 18px; height: 18px; }
-  .error-banner button { margin-left: auto; flex-shrink: 0; background: rgba(255,45,85,0.15); border: 1px solid var(--accent); color: var(--accent); border-radius: 15px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: var(--font-sans); transition: all 0.2s; }
-  .error-banner button:hover { background: var(--accent); color: #fff; }
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
   @media (max-width: 640px) {
@@ -262,11 +257,6 @@
   </section>
 
   <section class="results-section" id="resultsSection">
-    <div class="error-banner" id="errorBanner">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span id="errorMsg"></span>
-      <button id="retryBtn" onclick="generate()">Retry</button>
-    </div>
     <div id="resultsContainer"></div>
     <div class="btn-actions">
       <button class="btn-regenerate" onclick="document.getElementById('topicInput').focus(); window.scrollTo({top: document.getElementById('generator').offsetTop - 80, behavior: 'smooth'});">🔄 Generate More</button>
@@ -392,70 +382,61 @@
   });
   document.addEventListener('click', () => document.getElementById('nicheDropdown').classList.remove('open'));
 
-  async function generate() {
-    const topicInput = document.getElementById('topicInput');
-    const topic = topicInput.value.trim();
+    function generate() {
+    const topic = document.getElementById('topicInput').value.trim();
     if (!topic) {
-      topicInput.focus();
-      topicInput.style.borderColor = 'var(--accent)';
-      setTimeout(() => { topicInput.style.borderColor = 'var(--border)'; }, 1500);
+      document.getElementById('topicInput').focus();
+      document.getElementById('topicInput').style.borderColor = 'var(--accent)';
+      setTimeout(() => { document.getElementById('topicInput').style.borderColor = 'var(--border)'; }, 1500);
       return;
     }
     const btn = document.getElementById('generateBtn');
-    const errorBanner = document.getElementById('errorBanner');
-    const errorMsg = document.getElementById('errorMsg');
-    errorBanner.classList.remove('visible');
     btn.classList.add('loading');
-    document.getElementById('resultsSection').classList.add('visible');
-    document.getElementById('resultsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">🤖 AI is crafting your captions...</div>';
-    try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic, tone: selectedTone })
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || 'Server error (' + response.status + ')');
-      }
-      if (!data.captions || data.captions.length === 0) {
-        throw new Error('AI returned no captions. Try a different topic.');
-      }
-      data.tone = TONES[selectedTone] || { emoji: '🔥', label: 'Viral' };
+    setTimeout(() => {
+      const data = buildResponse(topic, selectedTone);
       renderResults(data);
-      document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch (err) {
-      console.error('Generate error:', err);
-      errorMsg.textContent = err.message || 'Something went wrong. Please try again.';
-      errorBanner.classList.add('visible');
-      document.getElementById('resultsContainer').innerHTML = '';
-    } finally {
       btn.classList.remove('loading');
-    }
+      document.getElementById('resultsSection').classList.add('visible');
+      document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 600 + Math.random() * 400);
   }
 
-
-  function renderResults(data) {
-    const container = document.getElementById('resultsContainer');
-    container.innerHTML = `
-      <div class="result-block result-block--captions">
-        <div class="result-block-header"><div class="result-block-icon">✍️</div><div class="result-block-title">Fitness Captions — ${data.tone.emoji} ${data.tone.label} Tone</div></div>
-        ${data.captions.map((c, i) => `<div class="result-item" onclick="copySingle(this, '${escapeHtml(c)}')"><div class="result-item-number">${i + 1}</div><div class="result-item-text">${escapeHtml(c)}</div><button class="btn-copy" onclick="event.stopPropagation(); copySingle(this.closest('.result-item'), '${escapeHtml(c)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`).join('')}
-      </div>
-      <div class="result-block result-block--hooks">
-        <div class="result-block-header"><div class="result-block-icon">🎣</div><div class="result-block-title">Viral Fitness Hooks</div></div>
-        ${data.hooks.map((h, i) => `<div class="result-item" onclick="copySingle(this, '${escapeHtml(h)}')"><div class="result-item-number">${i + 1}</div><div class="result-item-text">${escapeHtml(h)}</div><button class="btn-copy" onclick="event.stopPropagation(); copySingle(this.closest('.result-item'), '${escapeHtml(h)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`).join('')}
-      </div>
-      <div class="result-block result-block--hashtags">
-        <div class="result-block-header"><div class="result-block-icon">#️⃣</div><div class="result-block-title">Trending Fitness Hashtags</div></div>
-        <div class="hashtag-cloud">${data.hashtags.map(h => `<span class="hashtag-tag" onclick="copyText('${h}')">${h}</span>`).join('')}</div>
-      </div>
-      <div class="result-block result-block--ctas">
-        <div class="result-block-header"><div class="result-block-icon">💬</div><div class="result-block-title">CTA Ideas for Fitness</div></div>
-        ${data.ctas.map((c, i) => `<div class="result-item" onclick="copySingle(this, '${escapeHtml(c)}')"><div class="result-item-number">${i + 1}</div><div class="result-item-text">${escapeHtml(c)}</div><button class="btn-copy" onclick="event.stopPropagation(); copySingle(this.closest('.result-item'), '${escapeHtml(c)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`).join('')}
-      </div>
-    `;
-    container._data = data;
+    function buildResponse(topic, tone) {
+    const toneData = TONES[tone];
+    const toneLabel = toneData.label.toLowerCase();
+    const topicLower = topic.toLowerCase();
+    const fitnessEmojis = ['💪', '🏋️', '🔥', '⚡', '🎯'];
+    const randEmoji = () => fitnessEmojis[Math.floor(Math.random() * fitnessEmojis.length)];
+    return {
+      tone: toneData,
+      captions: [
+        `POV: you didn't skip ${topicLower} day and the results are showing ${randEmoji()} consistency is the secret sauce #gymtok #fitness`,
+        `The ${topicLower} glow up is REAL ${toneData.emoji} showing up on days you don't feel like it = that's where the magic happens`,
+        `Idk who needs to hear this but your ${topicLower} game is about to level up 📈 ${randEmoji()} save this workout for later`,
+        `${toneLabel} energy for this ${topicLower} session — no excuses, just results ${randEmoji()} drop a 🔥 if you're hitting the gym today`,
+        `Everyone wants the ${topicLower} results but nobody wants the ${topicLower} work ${toneData.emoji} be the exception`
+      ],
+      hooks: [
+        `Stop scrolling — this ${topicLower} tip changed my physique completely 🚨`,
+        `3 ${topicLower} mistakes killing your gains (and how to fix them)`,
+        `What I eat in a day for ${topicLower} results 🥗 full breakdown below`,
+        `The ${topicLower} hack that fitness influencers don't want you to know`,
+        `Your ${topicLower} routine is missing THIS exercise 🎯 thread 👇`
+      ],
+      hashtags: [
+        '#fitness', '#gymtok', '#workout', '#fittok', '#gym',
+        '#transformation', '#fitnessmotivation', `#${topicLower.replace(/\s/g, '')}`,
+        '#gymlife', '#bodybuilding', '#fitnessjourney', '#gains',
+        '#exerciseroutine', '#healthylifestyle', '#fitnesstips'
+      ],
+      ctas: [
+        "👆 Drop a 💪 if you're hitting the gym today!",
+        '📌 Save this workout for your next gym session',
+        'Follow for more daily fitness tips & motivation 🔔',
+        'Comment your favorite exercise below 👇',
+        'Tag your gym partner who needs to see this 🏋️'
+      ]
+    };
   }
 
   function escapeHtml(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
